@@ -1,5 +1,7 @@
 package lyl.com.coolweather.util;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,6 +9,7 @@ import org.json.JSONObject;
 import lyl.com.coolweather.db.City;
 import lyl.com.coolweather.db.County;
 import lyl.com.coolweather.db.Province;
+import lyl.com.coolweather.gson.Weather;
 
 /**
  * Created by 林逸磊 on 2018/6/15.
@@ -69,5 +72,16 @@ public class Utility {
             }
         }
         return false;
+    }
+    public static Weather handleWeatherResponse(String response){
+        try {
+            JSONObject jsonObject=new JSONObject(response);
+            JSONArray jsonArray=jsonObject.getJSONArray("HeWeather");
+            String weatherContent=jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent,Weather.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
